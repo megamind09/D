@@ -1,0 +1,195 @@
+public class FibonacciRecursive {
+    public static int stepCount = 0;  // Global step counter
+
+    public static int fibonacci(int n) {
+        stepCount++;  // Count each function call as a step
+        if (n <= 1) {
+            return n;
+        } else {
+            return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+    }
+
+    public static void main(String[] args) {
+        int n = 5;  // Example value, change as needed
+        stepCount = 0;  // Reset step counter
+        int result = fibonacci(n);
+        System.out.println("Fibonacci(" + n + ") = " + result);
+        System.out.println("Step count = " + stepCount);
+    }
+}
+
+
+*********************************************************************************
+
+. Implement job sequencing with deadlines using a greedy method.
+
+
+public class FibonacciIterative {
+    public static int fibonacci(int n) {
+        int stepCount = 0;  // Local step counter
+
+        if (n <= 1) {
+            return n;
+        }
+
+        int fib1 = 0, fib2 = 1;
+        for (int i = 2; i <= n; i++) {import java.util.Arrays;
+
+class Job {
+    int id;
+    int deadline;
+    int profit;
+
+    public Job(int id, int deadline, int profit) {
+        this.id = id;
+        this.deadline = deadline;
+        this.profit = profit;
+    }
+}
+
+public class JobSequencing {
+    public static void jobSequencing(Job[] jobs) {
+        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
+
+        int maxDeadline = 0;
+        for (Job job : jobs) {
+            if (job.deadline > maxDeadline) {
+                maxDeadline = job.deadline;
+            }
+        }
+
+        int[] schedule = new int[maxDeadline];
+        Arrays.fill(schedule, -1);
+        int totalProfit = 0;
+
+        for (Job job : jobs) {
+            for (int j = job.deadline - 1; j >= 0; j--) {
+                if (schedule[j] == -1) {
+                    schedule[j] = job.id;
+                    totalProfit += job.profit;
+                    break;
+                }
+            }
+        }
+
+        System.out.println("Scheduled Jobs:");
+        for (int i = 0; i < schedule.length; i++) {
+            if (schedule[i] != -1) {
+                System.out.print("Job ID " + schedule[i] + " ");
+            }
+        }
+        System.out.println("\nTotal Profit: " + totalProfit);
+    }
+
+    public static void main(String[] args) {
+        Job[] jobs = {
+            new Job(1, 2, 100),
+            new Job(2, 1, 50),
+            new Job(3, 2, 10),
+            new Job(4, 1, 20),
+            new Job(5, 3, 30)
+        };
+
+        jobSequencing(jobs);
+    }
+}
+
+*********************************************************************************************************************
+           
+
+**********************************************************************************************************
+
+. Implement job sequencing with deadlines using a greedy method.
+
+**********************************************************************************************************************
+
+Write a program to solve a fractional Knapsack problem using a greedy method
+
+
+
+import java.util.*;
+
+class Item {
+    double value, weight, valuePerWeight;
+    
+    Item(double value, double weight) {
+        this.value = value;
+        this.weight = weight;
+        this.valuePerWeight = value / weight;
+    }
+}
+
+public class FractionalKnapsack {
+
+    public static double fractionalKnapsack(double capacity, Item[] items) {
+        Arrays.sort(items, (a, b) -> Double.compare(b.valuePerWeight, a.valuePerWeight));
+        
+        double totalValue = 0;
+        double remainingCapacity = capacity;
+        
+        for (Item item : items) {
+            if (remainingCapacity == 0) break;
+            if (item.weight <= remainingCapacity) {
+                totalValue += item.value;
+                remainingCapacity -= item.weight;
+            } else {
+                totalValue += item.valuePerWeight * remainingCapacity;
+                remainingCapacity = 0;
+            }
+        }
+        
+        return totalValue;
+    }
+
+    public static void main(String[] args) {
+        Item[] items = {
+            new Item(60, 10),
+            new Item(100, 20),
+            new Item(120, 30)
+        };
+        
+        double capacity = 50;
+        double maxValue = fractionalKnapsack(capacity, items);
+        
+        System.out.println("Maximum value in the knapsack: " + maxValue);
+    }
+}
+
+************************************************************************************************************************************
+
+Write a program to solve a 0-1 Knapsack problem using dynamic programming or branch and
+bound strategy.
+
+
+
+public class KnapsackDP {
+
+    public static int knapsack(int W, int[] weights, int[] values, int n) {
+        int[][] dp = new int[n + 1][W + 1];
+        
+        for (int i = 0; i <= n; i++) {
+            for (int w = 0; w <= W; w++) {
+                if (i == 0 || w == 0) {
+                    dp[i][w] = 0;
+                } else if (weights[i - 1] <= w) {
+                    dp[i][w] = Math.max(dp[i - 1][w], values[i - 1] + dp[i - 1][w - weights[i - 1]]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+        return dp[n][W];
+    }
+
+    public static void main(String[] args) {
+        int[] values = {60, 100, 120};
+        int[] weights = {10, 20, 30};
+        int W = 50; // Knapsack capacity
+        int n = values.length;
+
+        int maxProfit = knapsack(W, weights, values, n);
+        System.out.println("Maximum profit: " + maxProfit);
+    }
+}
+
